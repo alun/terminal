@@ -1,0 +1,3 @@
+[
+ [:app "pmeta-t" :terminal.new]
+]

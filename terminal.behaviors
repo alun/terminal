@@ -1,0 +1,13 @@
+[
+ [:app :lt.objs.plugins/load-js ["terminal_compiled.js"]]
+ [:app :lt.objs.plugins/load-keymap "terminal.keymap"]
+
+ [:terminal-browser :lt.plugins.terminal/stop-server-on-close]
+ [:terminal-browser :lt.objs.browser/destroy-on-close]
+ [:terminal-browser :lt.objs.browser/navigate!]
+
+ [:butterfly-server :lt.plugins.terminal/start-server]
+ [:butterfly-server :lt.plugins.terminal/restart-server]
+ [:butterfly-server :lt.plugins.terminal/stop-server]
+ [:butterfly-server :lt.plugins.terminal/capture-butterfly-address]
+]
