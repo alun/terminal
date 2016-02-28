@@ -31,6 +31,14 @@
                            (set! (.-bottom style) 0)
                            elem)]))
 
+(behavior ::stop-server-on-close
+          :triggers #{:close}
+          :reaction (fn [this]
+                      (println "Terminal closed" (:lt.object/id @this))
+                      (object/destroy! this)
+                      (let [browsers (object/by-tag :terminal-browser)]
+                        (when (nil? (seq browsers))
+                          (object/raise butterfly-server :close)))))
 
 ;;*********************************************************
 ;; Butterfly server background python process
@@ -74,15 +82,6 @@
                             (object/raise obj :navigate! addr)))
                         (doseq [t (object/by-tag :terminal-browser)]
                           (object/raise t :close)))))
-
-(behavior ::stop-server-on-close
-          :triggers #{:close}
-          :reaction (fn [this]
-                      (println "Terminal closed" (:lt.object/id @this))
-                      (object/destroy! this)
-                      (let [browsers (object/by-tag :terminal-browser)]
-                        (when (nil? (seq browsers))
-                          (object/raise butterfly-server :close)))))
 
 (defonce butterfly-server (object/create ::butterfly-server))
 
