@@ -1,6 +1,6 @@
 # Lighttable terminal plugin
 
-Implemets several routines on top of (Butterfly)[https://github.com/paradoxxxzero/butterfly]
+Implemets several routines on top of [Butterfly](https://github.com/paradoxxxzero/butterfly)
 so you need to have it on your path first
 
 ## Installation
