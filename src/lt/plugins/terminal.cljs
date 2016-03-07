@@ -11,6 +11,21 @@
 (declare butterfly-server)
 
 ;;*********************************************************
+;; LT application additional behaviors
+;;*********************************************************
+
+(behavior ::app-focus-passthrough
+          :triggers #{:show :focus}
+          :reaction (fn [this]
+                      (let [tab (tabs/active-tab)
+                            is-terminal? (-> @tab :tags (contains? :terminal-browser))]
+                        (when (and is-terminal? (not (::focus-timer @tab)))
+                          (object/assoc-in!
+                            tab [::focus-timer]
+                            (js/setTimeout
+                              #(tabs/active! tab) 0))))))
+
+;;*********************************************************
 ;; Special terminal browser (no nav bar)
 ;;*********************************************************
 
@@ -29,6 +44,7 @@
                          (let [elem (browser/webview this)
                                style (.-style elem)]
                            (set! (.-bottom style) 0)
+                           (object/assoc-in! this [:webview] elem)
                            elem)]))
 
 (behavior ::stop-server-on-close
@@ -39,6 +55,12 @@
                       (let [browsers (object/by-tag :terminal-browser)]
                         (when (nil? (seq browsers))
                           (object/raise butterfly-server :close)))))
+
+(behavior ::focus-passthrough
+          :triggers #{:show :focus}
+          :reaction (fn [this]
+                      (object/assoc-in! this [::focus-timer] nil)
+                      (.focus (:webview @this))))
 
 ;;*********************************************************
 ;; Butterfly server background python process
@@ -90,3 +112,4 @@
               :exec (fn []
                       (let [terminal-browser (object/create ::terminal-browser)]
                         (tabs/add-or-focus! terminal-browser)))})
+

@@ -1,8 +1,10 @@
 [
  [:app :lt.objs.plugins/load-js ["terminal_compiled.js"]]
  [:app :lt.objs.plugins/load-keymap "terminal.keymap"]
+ [:app :lt.plugins.terminal/app-focus-passthrough]
 
  [:terminal-browser :lt.plugins.terminal/stop-server-on-close]
+ [:terminal-browser :lt.plugins.terminal/focus-passthrough]
  [:terminal-browser :lt.objs.browser/destroy-on-close]
  [:terminal-browser :lt.objs.browser/navigate!]
 
